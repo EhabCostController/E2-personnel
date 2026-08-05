@@ -3,129 +3,88 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>نظام إدارة الحضور والرواتب والإجازات المتكامل</title>
+<title>E2 نظام إدارة الحضور والرواتب والإجازات المتكامل</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-<!-- Charts & Firebase Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 
 <style>
 :root {
-    --bg-main: #f1f5f9;
-    --bg-card: #ffffff;
-    --bg-sidebar: #0f172a;
-    --border-color: #e2e8f0;
-    
-    --text-primary: #0f172a;
-    --text-secondary: #64748b;
-    --text-muted: #94a3b8;
-    
-    --accent: #2563eb;
-    --accent-hover: #1d4ed8;
-    --accent-light: rgba(37, 99, 235, 0.1);
-    
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --info: #0ea5e9;
-
-    --status-work-bg: #dbeafe;   --status-work-txt: #1e40af;
-    --status-leave-bg: #fef3c7;  --status-leave-txt: #92400e;
-    --status-off-bg: #ede9fe;    --status-off-txt: #5b21b6;
-    --status-abs-bg: #fee2e2;    --status-abs-txt: #991b1b;
-    --status-unset-bg: #f1f5f9;  --status-unset-txt: #64748b;
-
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 14px;
+    --bg-main: #f1f5f9; --bg-card: #ffffff; --bg-sidebar: #0f172a; --border-color: #e2e8f0;
+    --text-primary: #0f172a; --text-secondary: #64748b; --text-muted: #94a3b8;
+    --accent: #2563eb; --accent-hover: #1d4ed8; --accent-light: rgba(37,99,235,0.1);
+    --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --info: #0ea5e9;
+    --status-work-bg: #dbeafe; --status-work-txt: #1e40af;
+    --status-leave-bg: #fef3c7; --status-leave-txt: #92400e;
+    --status-off-bg: #ede9fe; --status-off-txt: #5b21b6;
+    --status-abs-bg: #fee2e2; --status-abs-txt: #991b1b;
+    --status-unset-bg: #f1f5f9; --status-unset-txt: #64748b;
+    --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px;
 }
-
 [data-theme="dark"] {
-    --bg-main: #0b0f19;
-    --bg-card: #151c2c;
-    --bg-sidebar: #090d16;
-    --border-color: #232d42;
-    
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-muted: #64748b;
-    
-    --accent: #3b82f6;
-    --accent-hover: #60a5fa;
-    --accent-light: rgba(59, 130, 246, 0.15);
-
-    --status-work-bg: rgba(30, 64, 175, 0.3);   --status-work-txt: #93c5fd;
-    --status-leave-bg: rgba(146, 64, 14, 0.3);  --status-leave-txt: #fcd34d;
-    --status-off-bg: rgba(91, 33, 182, 0.3);    --status-off-txt: #c4b5fd;
-    --status-abs-bg: rgba(153, 27, 27, 0.3);    --status-abs-txt: #fca5a5;
-    --status-unset-bg: rgba(51, 65, 85, 0.3);   --status-unset-txt: #94a3b8;
-
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --bg-main: #0b0f19; --bg-card: #151c2c; --bg-sidebar: #090d16; --border-color: #232d42;
+    --text-primary: #f8fafc; --text-secondary: #94a3b8; --text-muted: #64748b;
+    --accent: #3b82f6; --accent-hover: #60a5fa; --accent-light: rgba(59,130,246,0.15);
+    --status-work-bg: rgba(30,64,175,0.3); --status-work-txt: #93c5fd;
+    --status-leave-bg: rgba(146,64,14,0.3); --status-leave-txt: #fcd34d;
+    --status-off-bg: rgba(91,33,182,0.3); --status-off-txt: #c4b5fd;
+    --status-abs-bg: rgba(153,27,27,0.3); --status-abs-txt: #fca5a5;
+    --status-unset-bg: rgba(51,65,85,0.3); --status-unset-txt: #94a3b8;
+    --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5);
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+body, .sidebar, .section-card, .calendar-day, button, input, select, textarea, .stat-card, .modal, .nav-item {
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
 body { background-color: var(--bg-main); color: var(--text-primary); display: flex; min-height: 100vh; font-size: 0.82rem; }
-
 .sidebar { width: 230px; background-color: var(--bg-sidebar); color: #fff; padding: 20px 14px; display: flex; flex-direction: column; gap: 20px; box-shadow: var(--shadow-md); position: sticky; top: 0; height: 100vh; flex-shrink: 0; z-index: 100; }
 .sidebar h2 { font-size: 1rem; color: #38bdf8; display: flex; align-items: center; gap: 8px; font-weight: 700; }
 .nav-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
 .nav-item { padding: 9px 12px; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s; color: #94a3b8; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 0.8rem; }
-.nav-item:hover, .nav-item.active { background-color: rgba(255, 255, 255, 0.08); color: #fff; }
-.nav-item.active { border-right: 3px solid var(--accent); background-color: rgba(37, 99, 235, 0.15); }
-.sidebar-footer { margin-top: auto; font-size: 0.68rem; color: #64748b; line-height: 1.5; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 12px; }
-
+.nav-item:hover, .nav-item.active { background-color: rgba(255,255,255,0.08); color: #fff; }
+.nav-item.active { border-right: 3px solid var(--accent); background-color: rgba(37,99,235,0.15); }
+.sidebar-footer { margin-top: auto; font-size: 0.68rem; color: #64748b; line-height: 1.5; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; }
 .main-content { flex: 1; padding: 20px 24px; overflow-y: auto; max-width: 100%; }
 .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
 .header h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.3px; }
 .controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-
 select, input, button, textarea { padding: 7px 11px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.78rem; outline: none; background-color: var(--bg-card); color: var(--text-primary); font-family: inherit; }
 select:focus, input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-light); }
 button { background-color: var(--accent); color: #fff; border: none; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; white-space: nowrap; }
 button:hover { background-color: var(--accent-hover); transform: translateY(-1px); }
 button:active { transform: translateY(0); }
 button.btn-secondary { background-color: var(--text-muted); color: #fff; }
-button.btn-secondary:hover { opacity: 0.9; }
 button.btn-success { background-color: var(--success); }
-button.btn-success:hover { opacity: 0.9; }
 button.btn-danger { background-color: var(--danger); }
-button.btn-danger:hover { opacity: 0.9; }
 button.btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); }
 button.btn-ghost:hover { background: var(--border-color); color: var(--text-primary); }
 button.btn-sm { padding: 4px 8px; font-size: 0.72rem; border-radius: 4px; }
 button.theme-toggle { padding: 7px; border-radius: var(--radius-sm); background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); }
-
 .conn-badge { display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); }
 .conn-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; }
-.conn-badge.online { border-color: rgba(16, 185, 129, 0.3); color: var(--success); }
+.conn-badge.online { border-color: rgba(16,185,129,0.3); color: var(--success); }
 .conn-badge.online .conn-dot { background: var(--success); }
-.conn-badge.offline { border-color: rgba(239, 68, 68, 0.3); color: var(--danger); }
+.conn-badge.offline { border-color: rgba(239,68,68,0.3); color: var(--danger); }
 .conn-badge.offline .conn-dot { background: var(--danger); }
-
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
 .stat-card { background: var(--bg-card); padding: 14px 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; justify-content: space-between; }
 .stat-card h3 { font-size: 0.73rem; color: var(--text-secondary); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; font-weight: 600; }
 .stat-card .value { font-size: 1.25rem; font-weight: 700; }
-
 .section-tab { display: none; }
 .section-tab.active { display: block; }
 .section-card { background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); padding: 18px 20px; margin-bottom: 20px; box-shadow: var(--shadow-sm); }
 .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
 .section-title { font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-
 .charts-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
 .chart-box { position: relative; height: 220px; width: 100%; }
-
 .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 12px; }
 .calendar-day-header { text-align: center; font-weight: 700; padding: 6px; color: var(--text-secondary); background: var(--bg-main); border-radius: var(--radius-sm); font-size: 0.72rem; }
 .calendar-day { min-height: 62px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 6px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: all 0.15s ease; background: var(--bg-card); position: relative; }
@@ -136,17 +95,14 @@ button.theme-toggle { padding: 7px; border-radius: var(--radius-sm); background:
 .day-num { font-weight: 700; font-size: 0.75rem; }
 .day-weekday { font-size: 0.62rem; color: var(--text-muted); }
 .day-status { align-self: flex-start; padding: 2px 6px; border-radius: 4px; font-size: 0.62rem; font-weight: 700; margin-top: 2px; }
-
 .status-work { background: var(--status-work-bg); color: var(--status-work-txt); }
 .status-leave { background: var(--status-leave-bg); color: var(--status-leave-txt); }
 .status-official { background: var(--status-off-bg); color: var(--status-off-txt); }
 .status-absent { background: var(--status-abs-bg); color: var(--status-abs-txt); }
 .status-unset { background: var(--status-unset-bg); color: var(--status-unset-txt); }
-
 .legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; font-size: 0.7rem; color: var(--text-secondary); }
 .legend span { display: inline-flex; align-items: center; gap: 4px; }
 .legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
-
 .table-wrap { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
 table { width: 100%; border-collapse: collapse; min-width: 320px; background: var(--bg-card); }
 th, td { text-align: right; padding: 10px 12px; border-bottom: 1px solid var(--border-color); font-size: 0.8rem; white-space: nowrap; }
@@ -154,11 +110,9 @@ th { background-color: var(--bg-main); color: var(--text-secondary); font-weight
 tr.clickable-row { cursor: pointer; transition: background-color 0.15s ease; }
 tr.clickable-row:hover { background-color: var(--accent-light); }
 .badge { padding: 2px 6px; border-radius: 6px; font-size: 0.68rem; font-weight: 700; }
-
 .empty-state { text-align: center; padding: 36px 16px; color: var(--text-muted); }
 .empty-state i { font-size: 2rem; margin-bottom: 8px; opacity: 0.5; }
-
-.modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); display: none; justify-content: center; align-items: center; z-index: 200; padding: 12px; }
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); display: none; justify-content: center; align-items: center; z-index: 200; padding: 12px; }
 .modal-overlay.open { display: flex; }
 .modal { background: var(--bg-card); border: 1px solid var(--border-color); padding: 18px; border-radius: var(--radius-lg); width: 440px; max-width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); animation: modalIn 0.15s ease-out; }
 @keyframes modalIn { from{ opacity:0; transform: scale(0.96);} to{opacity:1; transform:scale(1);} }
@@ -169,27 +123,25 @@ tr.clickable-row:hover { background-color: var(--accent-light); }
 .form-row { display: flex; gap: 8px; }
 .form-row .form-group { flex: 1; }
 .modal-actions { display: flex; gap: 6px; margin-top: 14px; justify-content: flex-end; }
-
 .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; background: var(--bg-main); padding: 12px; border-radius: var(--radius-md); }
 .details-item { display: flex; flex-direction: column; gap: 2px; }
 .details-item .lbl { font-size: 0.68rem; color: var(--text-secondary); font-weight: 600; }
 .details-item .val { font-size: 0.85rem; font-weight: 700; }
-
 .status-choice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
 .status-choice { justify-content: center; padding: 10px; font-size: 0.75rem; border: 2px solid transparent; }
 .status-choice.selected { border-color: var(--text-primary); }
-
 #toastHost { position: fixed; bottom: 16px; left: 16px; display: flex; flex-direction: column; gap: 8px; z-index: 300; }
 .toast { background: var(--bg-sidebar); color: #fff; padding: 9px 14px; border-radius: var(--radius-md); font-size: 0.75rem; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; animation: toastIn 0.2s ease-out; max-width: 280px; }
 .toast.success { background: var(--success); }
 .toast.error { background: var(--danger); }
 .toast.info { background: var(--accent); }
 @keyframes toastIn { from{opacity:0; transform: translateX(-12px);} to{opacity:1; transform:translateX(0);} }
-
 #loadingOverlay { position: fixed; inset: 0; background: var(--bg-main); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; z-index: 500; }
 .spinner { width: 32px; height: 32px; border: 3px solid var(--border-color); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
+.loading-error { color: var(--danger); font-size: 0.8rem; text-align: center; max-width: 300px; line-height: 1.6; }
+.loading-error button { margin-top: 10px; }
 @media (max-width: 820px) {
     body { flex-direction: column; }
     .sidebar { width: 100%; height: auto; position: relative; flex-direction: row; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border-color); }
@@ -208,53 +160,54 @@ tr.clickable-row:hover { background-color: var(--accent-light); }
     .day-status { font-size: 0.55rem; padding: 1px 3px; }
 }
 </style>
+<base target="_blank">
 </head>
 <body>
 
 <div id="loadingOverlay">
     <div class="spinner"></div>
-    <div style="color:var(--text-secondary); font-size:0.8rem;">جاري الإتصال بالمزامنة...</div>
+    <div id="loadingText" style="color:var(--text-secondary); font-size:0.8rem;">جاري الإتصال بالمزامنة...</div>
+    <div id="loadingError" style="display:none;" class="loading-error"></div>
 </div>
 
 <div class="sidebar">
-    <h2><i class="fa-solid fa-chart-pie"></i> <span>نظام الحضور</span></h2>
-    <ul class="nav-list">
-        <li class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard', this)"><i class="fa-solid fa-house"></i> <span>الرئيسية</span></li>
-        <li class="nav-item" data-tab="calendar" onclick="switchTab('calendar', this)"><i class="fa-solid fa-calendar-days"></i> <span>تقويم الحضور</span></li>
-        <li class="nav-item" data-tab="payroll" onclick="switchTab('payroll', this)"><i class="fa-solid fa-file-invoice-dollar"></i> <span>سجل الفترات</span></li>
-        <li class="nav-item" data-tab="settings" onclick="switchTab('settings', this)"><i class="fa-solid fa-sliders"></i> <span>الإعدادات</span></li>
+    <h2><i class="fa-solid fa-chart-pie" aria-hidden="true"></i> <span>نظام الحضور</span></h2>
+    <ul class="nav-list" role="tablist">
+        <li class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard', this)" role="tab" aria-selected="true" tabindex="0"><i class="fa-solid fa-house" aria-hidden="true"></i> <span>الرئيسية</span></li>
+        <li class="nav-item" data-tab="calendar" onclick="switchTab('calendar', this)" role="tab" aria-selected="false" tabindex="0"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> <span>تقويم الحضور</span></li>
+        <li class="nav-item" data-tab="payroll" onclick="switchTab('payroll', this)" role="tab" aria-selected="false" tabindex="0"><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i> <span>سجل الفترات</span></li>
+        <li class="nav-item" data-tab="settings" onclick="switchTab('settings', this)" role="tab" aria-selected="false" tabindex="0"><i class="fa-solid fa-sliders" aria-hidden="true"></i> <span>الإعدادات</span></li>
     </ul>
     <div class="sidebar-footer">متصل بـ Firebase Realtime DB</div>
 </div>
 
 <div class="main-content">
-
     <div class="header">
         <div>
             <h1 id="pageTitle">تتبع الحضور والرواتب</h1>
             <p style="color:var(--text-secondary); font-size: 0.72rem; margin-top: 2px;" id="employeeSub">تحميل البيانات...</p>
         </div>
         <div class="controls">
-            <button class="theme-toggle" onclick="toggleTheme()" title="تغيير المظهر"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
+            <button class="theme-toggle" onclick="toggleTheme()" title="تغيير المظهر" aria-label="تغيير المظهر"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
             <div class="conn-badge" id="connBadge"><span class="conn-dot"></span><span id="connText">جاري الاتصال...</span></div>
+            <label for="periodSelect" class="sr-only">اختيار الفترة</label>
             <select id="periodSelect" onchange="onPeriodSelectChange()"></select>
-            <button class="btn-success" onclick="openPeriodModal()"><i class="fa-solid fa-plus"></i> فترة جديدة</button>
+            <button class="btn-success" onclick="openPeriodModal()"><i class="fa-solid fa-plus" aria-hidden="true"></i> فترة جديدة</button>
         </div>
     </div>
 
     <div class="stats-grid" id="statsGrid"></div>
 
-    <!-- Dashboard -->
     <div id="tab-dashboard" class="section-tab active">
         <div class="section-card" id="dashCalendarCard">
             <div class="section-header">
-                <div class="section-title"><i class="fa-regular fa-calendar-check"></i> سجل الحضور للفترة الحالية</div>
+                <div class="section-title"><i class="fa-regular fa-calendar-check" aria-hidden="true"></i> سجل الحضور للفترة الحالية</div>
                 <div style="font-size: 0.7rem; color:var(--text-secondary);">انقر على اليوم لتغيير حالته</div>
             </div>
             <div id="dashCalendarBody"></div>
         </div>
         <div class="section-card">
-            <div class="section-header"><div class="section-title"><i class="fa-solid fa-chart-simple"></i> التحليلات الرسمية</div></div>
+            <div class="section-header"><div class="section-title"><i class="fa-solid fa-chart-simple" aria-hidden="true"></i> التحليلات الرسمية</div></div>
             <div class="charts-row">
                 <div class="chart-box"><canvas id="statusChart"></canvas></div>
                 <div class="chart-box"><canvas id="salaryChart"></canvas></div>
@@ -262,28 +215,26 @@ tr.clickable-row:hover { background-color: var(--accent-light); }
         </div>
     </div>
 
-    <!-- Calendar Tab -->
     <div id="tab-calendar" class="section-tab">
         <div class="section-card">
-            <div class="section-header"><div class="section-title"><i class="fa-solid fa-calendar-week"></i> التقويم الشامل للفترة الحالية</div></div>
+            <div class="section-header"><div class="section-title"><i class="fa-solid fa-calendar-week" aria-hidden="true"></i> التقويم الشامل للفترة الحالية</div></div>
             <div id="fullCalendarBody"></div>
         </div>
     </div>
 
-    <!-- Payroll Tab -->
     <div id="tab-payroll" class="section-tab">
         <div class="section-card">
             <div class="section-header">
-                <div class="section-title"><i class="fa-solid fa-table-list"></i> ملخص جميع الفترات</div>
-                <button class="btn-secondary btn-sm" onclick="exportExcelMultiSheet()"><i class="fa-solid fa-file-excel"></i> تصدير Excel</button>
+                <div class="section-title"><i class="fa-solid fa-table-list" aria-hidden="true"></i> ملخص جميع الفترات</div>
+                <button class="btn-secondary btn-sm" onclick="exportExcelMultiSheet()"><i class="fa-solid fa-file-excel" aria-hidden="true"></i> تصدير Excel</button>
             </div>
             <div class="table-wrap">
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 50px;">#</th>
-                            <th>الفترة</th>
-                            <th style="width: 120px; text-align: center;">خيارات</th>
+                            <th scope="col" style="width: 50px;">#</th>
+                            <th scope="col">الفترة</th>
+                            <th scope="col" style="width: 120px; text-align: center;">خيارات</th>
                         </tr>
                     </thead>
                     <tbody id="payrollTableBody"></tbody>
@@ -292,21 +243,20 @@ tr.clickable-row:hover { background-color: var(--accent-light); }
         </div>
     </div>
 
-    <!-- Settings Tab -->
     <div id="tab-settings" class="section-tab">
         <div class="section-card">
-            <div class="section-header"><div class="section-title"><i class="fa-solid fa-gear"></i> إعدادات الموظف والعملية</div></div>
+            <div class="section-header"><div class="section-title"><i class="fa-solid fa-gear" aria-hidden="true"></i> إعدادات الموظف والعملية</div></div>
             <div class="form-row">
-                <div class="form-group"><label>اسم الموظف</label><input id="setEmployeeName" type="text"></div>
-                <div class="form-group"><label>الشركة / القسم</label><input id="setCompanyName" type="text"></div>
+                <div class="form-group"><label for="setEmployeeName">اسم الموظف</label><input id="setEmployeeName" type="text"></div>
+                <div class="form-group"><label for="setCompanyName">الشركة / القسم</label><input id="setCompanyName" type="text"></div>
             </div>
             <div class="form-row">
-                <div class="form-group"><label>العملة</label><input id="setCurrency" type="text"></div>
-                <div class="form-group"><label>الرصيد الافتتاحي للإجازات (يوم)</label><input id="setOpeningBalance" type="number" step="0.01"></div>
+                <div class="form-group"><label for="setCurrency">العملة</label><input id="setCurrency" type="text"></div>
+                <div class="form-group"><label for="setOpeningBalance">الرصيد الافتتاحي للإجازات (يوم)</label><input id="setOpeningBalance" type="number" step="0.01"></div>
             </div>
             <div class="form-row">
-                <div class="form-group"><label>الاستحقاق الافتراضي للفترة</label><input id="setDefaultAccrual" type="number" step="0.01"></div>
-                <div class="form-group"><label>طريقة احتساب الأجر اليومي</label>
+                <div class="form-group"><label for="setDefaultAccrual">الاستحقاق الافتراضي للفترة</label><input id="setDefaultAccrual" type="number" step="0.01"></div>
+                <div class="form-group"><label for="setDailyRateMethod">طريقة احتساب الأجر اليومي</label>
                     <select id="setDailyRateMethod">
                         <option value="periodDays">قسمة الراتب على أيام الفترة الفعلية</option>
                         <option value="officialWorkDays">قسمة الراتب على أيام عمل ثابتة</option>
@@ -314,40 +264,37 @@ tr.clickable-row:hover { background-color: var(--accent-light); }
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group"><label>عدد الأيام الثابتة (في حال الاختيار الثابت)</label><input id="setOfficialWorkDays" type="number"></div>
-                <div class="form-group" style="display:flex; align-items:flex-end;"><button class="btn-success" onclick="saveSettings()" style="width:100%; justify-content:center;"><i class="fa-solid fa-floppy-disk"></i> حفظ البيانات</button></div>
+                <div class="form-group"><label for="setOfficialWorkDays">عدد الأيام الثابتة (في حال الاختيار الثابت)</label><input id="setOfficialWorkDays" type="number"></div>
+                <div class="form-group" style="display:flex; align-items:flex-end;"><button class="btn-success" onclick="saveSettings()" style="width:100%; justify-content:center;"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> حفظ البيانات</button></div>
             </div>
         </div>
 
         <div class="section-card">
-            <div class="section-header"><div class="section-title"><i class="fa-solid fa-database"></i> النسخ الاحتياطي والأمان</div></div>
+            <div class="section-header"><div class="section-title"><i class="fa-solid fa-database" aria-hidden="true"></i> النسخ الاحتياطي والأمان</div></div>
             <p style="color:var(--text-secondary); margin-bottom:12px; font-size:0.75rem;">تُحفظ كافة التغييرات مباشرة وبشكل آمن على قاعدة بيانات Firebase.</p>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                <button class="btn-secondary btn-sm" onclick="exportJSON()"><i class="fa-solid fa-download"></i> تصدير JSON</button>
-                <button class="btn-ghost btn-sm" onclick="document.getElementById('importFile').click()"><i class="fa-solid fa-upload"></i> استيراد JSON</button>
+                <button class="btn-secondary btn-sm" onclick="exportJSON()"><i class="fa-solid fa-download" aria-hidden="true"></i> تصدير JSON</button>
+                <button class="btn-ghost btn-sm" onclick="document.getElementById('importFile').click()"><i class="fa-solid fa-upload" aria-hidden="true"></i> استيراد JSON</button>
                 <input type="file" id="importFile" accept="application/json" style="display:none" onchange="importJSON(event)">
-                <button class="btn-danger btn-sm" onclick="confirmClearAll()"><i class="fa-solid fa-trash"></i> مسح كل البيانات</button>
+                <button class="btn-danger btn-sm" onclick="confirmClearAll()"><i class="fa-solid fa-trash" aria-hidden="true"></i> مسح كل البيانات</button>
             </div>
         </div>
     </div>
-
 </div>
 
-<!-- Modals -->
-<!-- Period Edit/Add Modal -->
-<div class="modal-overlay" id="periodModal">
+<div class="modal-overlay" id="periodModal" role="dialog" aria-modal="true" aria-labelledby="periodModalTitle">
     <div class="modal">
         <h3 id="periodModalTitle">إضافة فترة عمل جديدة</h3>
         <div class="form-row">
-            <div class="form-group"><label>تاريخ البداية</label><input type="date" id="pStart"></div>
-            <div class="form-group"><label>تاريخ النهاية</label><input type="date" id="pEnd"></div>
+            <div class="form-group"><label for="pStart">تاريخ البداية</label><input type="date" id="pStart"></div>
+            <div class="form-group"><label for="pEnd">تاريخ النهاية</label><input type="date" id="pEnd"></div>
         </div>
         <div class="form-row">
-            <div class="form-group"><label>راتب الفترة الأساسي</label><input type="number" id="pSalary" placeholder="6000"></div>
+            <div class="form-group"><label for="pSalary">راتب الفترة الأساسي</label><input type="number" id="pSalary" placeholder="6000" min="0"></div>
         </div>
         <div class="form-row">
-            <div class="form-group"><label>رصيد مكتسب للفترة</label><input type="number" step="0.01" id="pAccrued"></div>
-            <div class="form-group"><label>رصيد إضافي (بدل رسميات)</label><input type="number" step="0.01" id="pBonusLeave" placeholder="0"></div>
+            <div class="form-group"><label for="pAccrued">رصيد مكتسب للفترة</label><input type="number" step="0.01" id="pAccrued"></div>
+            <div class="form-group"><label for="pBonusLeave">رصيد إضافي (بدل رسميات)</label><input type="number" step="0.01" id="pBonusLeave" placeholder="0" min="0"></div>
         </div>
         <div class="modal-actions">
             <button class="btn-secondary" onclick="closeModal('periodModal')">إلغاء</button>
@@ -356,8 +303,7 @@ tr.clickable-row:hover { background-color: var(--accent-light); }
     </div>
 </div>
 
-<!-- Period Details Modal -->
-<div class="modal-overlay" id="periodDetailsModal">
+<div class="modal-overlay" id="periodDetailsModal" role="dialog" aria-modal="true">
     <div class="modal">
         <h3>تفاصيل فترة العمل</h3>
         <div id="periodDetailsBody"></div>
@@ -365,8 +311,7 @@ tr.clickable-row:hover { background-color: var(--accent-light); }
     </div>
 </div>
 
-<!-- Day Status Modal -->
-<div class="modal-overlay" id="statusModal">
+<div class="modal-overlay" id="statusModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal">
         <h3 id="modalTitle">تحديد حالة اليوم</h3>
         <div class="status-choice-grid" id="statusChoiceGrid"></div>
@@ -376,8 +321,7 @@ tr.clickable-row:hover { background-color: var(--accent-light); }
     </div>
 </div>
 
-<!-- Confirm Modal -->
-<div class="modal-overlay" id="confirmModal">
+<div class="modal-overlay" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
     <div class="modal" style="width:340px;">
         <h3 id="confirmTitle">تأكيد الإجراء</h3>
         <p id="confirmMessage" style="color:var(--text-secondary); font-size:0.75rem; margin-bottom: 8px;"></p>
@@ -388,33 +332,31 @@ tr.clickable-row:hover { background-color: var(--accent-light); }
     </div>
 </div>
 
-<div id="toastHost"></div>
+<div id="toastHost" role="status" aria-live="polite"></div>
 
 <script>
+/* ========== THEME ========== */
 function initTheme() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    var savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
     updateThemeIcon(savedTheme);
 }
 function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    var currentTheme = document.documentElement.getAttribute('data-theme');
+    var newTheme = currentTheme === 'light' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     updateThemeIcon(newTheme);
     renderCharts();
 }
 function updateThemeIcon(theme) {
-    const icon = document.getElementById('themeIcon');
-    if (theme === 'dark') {
-        icon.className = 'fa-solid fa-sun';
-    } else {
-        icon.className = 'fa-solid fa-moon';
-    }
+    document.getElementById('themeIcon').className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
 }
 initTheme();
 
-const firebaseConfig = {
+/* ========== FIREBASE ========== */
+/* ⚠️ لو واقف على "جاري الإتصال"، تأكدي إن المفاتيح دي صحيحة من Firebase Console */
+var firebaseConfig = {
   apiKey: "AIzaSyAivDFRS4Uq4YrdaDNDBGLCZffJK12Ixbo",
   authDomain: "e2-personnel.firebaseapp.com",
   databaseURL: "https://e2-personnel-default-rtdb.firebaseio.com",
@@ -424,47 +366,59 @@ const firebaseConfig = {
   appId: "1:941535411138:web:beddebdfd7f6c651b3345b"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const settingsRef = db.ref('lkh_system/settings');
-const periodsRef = db.ref('lkh_system/periods');
+var db, settingsRef, periodsRef;
+var firebaseInitError = null;
 
-setTimeout(() => {
-    const ov = document.getElementById('loadingOverlay');
-    if (ov && ov.style.display !== 'none') {
-        ov.style.display = 'none';
-        showToast('تمت المزامنة بنجاح', 'info');
-    }
-}, 2000);
+try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    settingsRef = db.ref('lkh_system/settings');
+    periodsRef = db.ref('lkh_system/periods');
+} catch (e) {
+    firebaseInitError = e.message;
+    console.error('Firebase init error:', e);
+}
 
-const DEFAULT_SETTINGS = {
+/* ========== CONSTANTS & STATE ========== */
+var DEFAULT_SETTINGS = {
     employeeName: '', companyName: '', currency: 'ج.م',
     openingBalance: 0, defaultAccrual: 2.5,
     officialWorkDays: 22, dailyRateMethod: 'periodDays'
 };
-const STATUS_META = {
-    work:     { label: 'عمل',                        short: 'عمل',  cls: 'status-work' },
-    leave:    { label: 'إجازة (تخصم من الرصيد)',      short: 'إجازة', cls: 'status-leave' },
-    official: { label: 'سفر / مأمورية / رسمية',       short: 'سفر',  cls: 'status-official' },
-    absent:   { label: 'غياب',                        short: 'غياب', cls: 'status-absent' },
-    unset:    { label: 'غير مسجل',                    short: '—',    cls: 'status-unset' }
+var STATUS_META = {
+    work:     { label: 'عمل',                   short: 'عمل',  cls: 'status-work' },
+    leave:    { label: 'إجازة (تخصم من الرصيد)', short: 'إجازة', cls: 'status-leave' },
+    official: { label: 'سفر / مأمورية / رسمية',  short: 'سفر',  cls: 'status-official' },
+    absent:   { label: 'غياب',                  short: 'غياب', cls: 'status-absent' },
+    unset:    { label: 'غير مسجل',              short: '—',    cls: 'status-unset' }
 };
-const WEEKDAYS = ["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+var WEEKDAYS = ["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
 
-let settings = { ...DEFAULT_SETTINGS };
-let rawPeriods = [];      
-let periods = [];         
-let currentPeriodId = null;
-let selectedDayDate = null;
-let editingPeriodId = null;
-let firstLoadDone = { settings: false, periods: false };
+var settings = Object.assign({}, DEFAULT_SETTINGS);
+var rawPeriods = [];
+var periods = [];
+var currentPeriodId = null;
+var selectedDayDate = null;
+var editingPeriodId = null;
+var firstLoadDone = { settings: false, periods: false };
+var conn = { online: navigator.onLine, lastSaved: null };
 
-const conn = { online: navigator.onLine, lastSaved: null };
+/* ========== UTILITIES — XSS-safe ========== */
+function escapeHtml(text) {
+    if (text == null) return '';
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
 
+/* إصلاح التواريخ: T12:00:00 بدون Z لتجنب مشاكل المناطق الزمنية */
 function dateRangeArray(start, end) {
-    const out = [];
-    let cur = new Date(start + 'T00:00:00Z');
-    const last = new Date(end + 'T00:00:00Z');
+    var out = [];
+    var cur = new Date(start + 'T12:00:00');
+    var last = new Date(end + 'T12:00:00');
     while (cur <= last) {
         out.push(cur.toISOString().slice(0, 10));
         cur = new Date(cur.getTime() + 86400000);
@@ -472,133 +426,196 @@ function dateRangeArray(start, end) {
     return out;
 }
 function todayISO() { return new Date().toISOString().slice(0, 10); }
-function weekdayOf(dateStr) { return new Date(dateStr + 'T00:00:00Z').getUTCDay(); }
-function fmtMoney(n) { return (Number(n) || 0).toLocaleString('ar-EG', { maximumFractionDigits: 2 }) + ' ' + settings.currency; }
+function weekdayOf(dateStr) { return new Date(dateStr + 'T12:00:00').getDay(); }
+function fmtMoney(n) { return (Number(n) || 0).toLocaleString('ar-EG', { maximumFractionDigits: 2 }) + ' ' + escapeHtml(settings.currency); }
 function periodsOverlap(s1, e1, s2, e2) { return s1 <= e2 && s2 <= e1; }
 
-function showToast(message, type = 'info') {
-    const host = document.getElementById('toastHost');
-    const el = document.createElement('div');
+/* ========== UI HELPERS ========== */
+function showToast(message, type) {
+    type = type || 'info';
+    var host = document.getElementById('toastHost');
+    var el = document.createElement('div');
     el.className = 'toast ' + type;
-    const icon = type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-info';
-    el.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
+    var icon = type === 'success' ? 'fa-circle-check' : type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-info';
+    el.innerHTML = '<i class="fa-solid ' + icon + '" aria-hidden="true"></i><span>' + escapeHtml(message) + '</span>';
     host.appendChild(el);
-    setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; setTimeout(() => el.remove(), 300); }, 3000);
+    setTimeout(function() { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; setTimeout(function() { el.remove(); }, 300); }, 3000);
 }
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+var lastFocusedElement = null;
+function openModal(id) {
+    lastFocusedElement = document.activeElement;
+    document.getElementById(id).classList.add('open');
+    var modal = document.querySelector('#' + id + ' .modal');
+    if (modal) {
+        var focusable = modal.querySelector('button, input, select, textarea');
+        if (focusable) focusable.focus();
+    }
+}
+function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    if (lastFocusedElement) lastFocusedElement.focus();
+}
 function showConfirm(title, message, onYes) {
     document.getElementById('confirmTitle').textContent = title;
     document.getElementById('confirmMessage').textContent = message;
-    const btn = document.getElementById('confirmYesBtn');
-    const newBtn = btn.cloneNode(true);
+    var btn = document.getElementById('confirmYesBtn');
+    var newBtn = btn.cloneNode(true);
     btn.parentNode.replaceChild(newBtn, btn);
-    newBtn.addEventListener('click', () => { closeModal('confirmModal'); onYes(); });
+    newBtn.addEventListener('click', function() { closeModal('confirmModal'); onYes(); });
     openModal('confirmModal');
+}
+
+function hideLoading() {
+    var ov = document.getElementById('loadingOverlay');
+    if (ov) ov.style.display = 'none';
+}
+function showLoadingError(msg) {
+    document.querySelector('.spinner').style.display = 'none';
+    document.getElementById('loadingText').style.display = 'none';
+    var errDiv = document.getElementById('loadingError');
+    errDiv.style.display = 'block';
+    errDiv.innerHTML = msg + '<br><button class="btn-secondary btn-sm" onclick="location.reload()" style="margin-top:10px;"><i class="fa-solid fa-rotate-right"></i> إعادة المحاولة</button>';
 }
 function hideLoadingIfReady() {
     if (firstLoadDone.settings && firstLoadDone.periods) {
-        const ov = document.getElementById('loadingOverlay');
-        if (ov) ov.style.display = 'none';
+        hideLoading();
     }
 }
 
+/* Fallback: لو البيانات مجتش خلال 8 ثواني، نظهر رسالة */
+setTimeout(function() {
+    if (!firstLoadDone.settings || !firstLoadDone.periods) {
+        if (firebaseInitError) {
+            showLoadingError('فشل الاتصال بقاعدة البيانات.<br>تأكدي من إعدادات Firebase.<br><small style="opacity:0.7">' + escapeHtml(firebaseInitError) + '</small>');
+        } else if (!navigator.onLine) {
+            showLoadingError('أنت غير متصل بالإنترنت.<br>تحققي من الاتصال وحاولي مرة أخرى.');
+        } else {
+            showLoadingError('الاستجابة بطيئة من الخادم.<br>ممكن يكون Firebase محتاج وقت أطول.<br>جاري المحاولة...');
+            // نديها 10 ثواني إضافية
+            setTimeout(function() {
+                if (!firstLoadDone.settings || !firstLoadDone.periods) {
+                    showLoadingError('تعذر الاتصال بقاعدة البيانات بعد عدة محاولات.<br>تأكدي من إعدادات Firebase Console.');
+                }
+            }, 10000);
+        }
+    }
+}, 8000);
+
 function renderConnBadge() {
-    const badge = document.getElementById('connBadge');
-    const text = document.getElementById('connText');
+    var badge = document.getElementById('connBadge');
+    var text = document.getElementById('connText');
     badge.classList.remove('online', 'offline');
     if (!conn.online) {
         badge.classList.add('offline');
         text.textContent = 'غير متصل';
     } else {
         badge.classList.add('online');
-        const t = conn.lastSaved ? conn.lastSaved.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) : '—';
-        text.textContent = `متصل • ${t}`;
+        var t = conn.lastSaved ? conn.lastSaved.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) : '—';
+        text.textContent = 'متصل • ' + t;
     }
 }
-window.addEventListener('online', () => { conn.online = true; renderConnBadge(); showToast('تم استعادة الاتصال', 'info'); });
-window.addEventListener('offline', () => { conn.online = false; renderConnBadge(); showToast('انقطع الاتصال', 'error'); });
+window.addEventListener('online', function() { conn.online = true; renderConnBadge(); showToast('تم استعادة الاتصال', 'info'); });
+window.addEventListener('offline', function() { conn.online = false; renderConnBadge(); showToast('انقطع الاتصال', 'error'); });
 
-settingsRef.on('value', snap => {
-    conn.lastSaved = new Date();
-    if (snap.exists()) {
-        settings = { ...DEFAULT_SETTINGS, ...snap.val() };
-    } else {
-        settingsRef.set(DEFAULT_SETTINGS);
-    }
+/* ========== FIREBASE LISTENERS (مع معالجة الأخطاء) ========== */
+if (settingsRef) {
+    settingsRef.on('value', function(snap) {
+        conn.lastSaved = new Date();
+        if (snap.exists()) {
+            settings = Object.assign({}, DEFAULT_SETTINGS, snap.val());
+        } else {
+            settingsRef.set(DEFAULT_SETTINGS).catch(function(e) { console.error('Settings write error:', e); });
+        }
+        firstLoadDone.settings = true;
+        renderSettingsForm();
+        renderAll();
+        renderConnBadge();
+        hideLoadingIfReady();
+    }, function(err) {
+        console.error('Settings listener error:', err);
+        firstLoadDone.settings = true;
+        hideLoadingIfReady();
+        showToast('خطأ في قراءة الإعدادات', 'error');
+    });
+} else {
     firstLoadDone.settings = true;
-    renderSettingsForm();
-    renderAll();
-    renderConnBadge();
     hideLoadingIfReady();
-});
+}
 
-periodsRef.on('value', snap => {
-    conn.lastSaved = new Date();
-    const data = snap.val() || {};
-    rawPeriods = Object.keys(data).map(id => ({ id, ...data[id] }));
-    rawPeriods.sort((a, b) => (a.start > b.start ? 1 : -1));
-    
-    // التعديل: اختيار الفترة بناءً على تاريخ اليوم الحالي بدلاً من أحدث فترة دائماً
-    if (rawPeriods.length) {
-        const today = todayISO();
-        // البحث عن الفترة التي تحتوي تاريخ اليوم
-        let activeP = rawPeriods.find(p => today >= p.start && today <= p.end);
-        
-        // إذا لم توجد فترة تغطي تاريخ اليوم، نأخذ أحدث فترة أقدم من تاريخ اليوم
-        if (!activeP) {
-            const pastPeriods = rawPeriods.filter(p => p.start <= today);
-            if (pastPeriods.length > 0) {
-                activeP = pastPeriods[pastPeriods.length - 1];
-            } else {
-                activeP = rawPeriods[0];
+if (periodsRef) {
+    periodsRef.on('value', function(snap) {
+        conn.lastSaved = new Date();
+        var data = snap.val() || {};
+        rawPeriods = Object.keys(data).map(function(id) { return Object.assign({ id: id }, data[id]); });
+        rawPeriods.sort(function(a, b) { return a.start > b.start ? 1 : -1; });
+
+        if (rawPeriods.length) {
+            var today = todayISO();
+            var activeP = rawPeriods.find(function(p) { return today >= p.start && today <= p.end; });
+            if (!activeP) {
+                var pastPeriods = rawPeriods.filter(function(p) { return p.start <= today; });
+                if (pastPeriods.length > 0) {
+                    activeP = pastPeriods[pastPeriods.length - 1];
+                } else {
+                    activeP = rawPeriods[0];
+                }
             }
+            if (!currentPeriodId || !rawPeriods.find(function(p) { return p.id === currentPeriodId; })) {
+                currentPeriodId = activeP.id;
+            }
+        } else {
+            currentPeriodId = null;
         }
-        
-        if (!currentPeriodId || !rawPeriods.find(p => p.id === currentPeriodId)) {
-            currentPeriodId = activeP.id;
-        }
-    } else {
-        currentPeriodId = null;
-    }
 
+        firstLoadDone.periods = true;
+        renderAll();
+        renderConnBadge();
+        hideLoadingIfReady();
+    }, function(err) {
+        console.error('Periods listener error:', err);
+        firstLoadDone.periods = true;
+        hideLoadingIfReady();
+        showToast('خطأ في قراءة الفترات', 'error');
+    });
+} else {
     firstLoadDone.periods = true;
-    renderAll();
-    renderConnBadge();
     hideLoadingIfReady();
-});
+}
 
+/* ========== BUSINESS LOGIC ========== */
 function computeDerived() {
-    let runningBalance = Number(settings.openingBalance) || 0;
-    periods = rawPeriods.map(rp => {
-        const days = dateRangeArray(rp.start, rp.end).length;
-        const attendance = rp.attendance || {};
-        const counts = { work: 0, leave: 0, official: 0, absent: 0, unset: 0 };
-        dateRangeArray(rp.start, rp.end).forEach(d => {
-            const st = attendance[d] || 'unset';
+    var runningBalance = Number(settings.openingBalance) || 0;
+    periods = rawPeriods.map(function(rp) {
+        var days = dateRangeArray(rp.start, rp.end).length;
+        var attendance = rp.attendance || {};
+        var counts = { work: 0, leave: 0, official: 0, absent: 0, unset: 0 };
+        dateRangeArray(rp.start, rp.end).forEach(function(d) {
+            var st = attendance[d] || 'unset';
             counts[st] = (counts[st] || 0) + 1;
         });
-        const dailyRate = settings.dailyRateMethod === 'officialWorkDays' && Number(settings.officialWorkDays) > 0
+        var dailyRate = settings.dailyRateMethod === 'officialWorkDays' && Number(settings.officialWorkDays) > 0
             ? (Number(rp.salary) || 0) / Number(settings.officialWorkDays)
             : (Number(rp.salary) || 0) / (days || 1);
 
-        const absenceDeduction = dailyRate * counts.absent;
-        const netSalary = (Number(rp.salary) || 0) - absenceDeduction;
+        var absenceDeduction = dailyRate * counts.absent;
+        var netSalary = (Number(rp.salary) || 0) - absenceDeduction;
 
-        const accrued = Number(rp.accrued) || 0;
-        const bonusLeave = Number(rp.bonusLeave) || 0;
-        const leaveOpening = runningBalance;
-        const leaveClosing = leaveOpening + accrued + bonusLeave - counts.leave;
+        var accrued = Number(rp.accrued) || 0;
+        var bonusLeave = Number(rp.bonusLeave) || 0;
+        var leaveOpening = runningBalance;
+        var leaveClosing = leaveOpening + accrued + bonusLeave - counts.leave;
         runningBalance = leaveClosing;
 
-        return {
-            ...rp, days, attendance, counts, dailyRate,
-            absenceDeduction, netSalary, accrued, bonusLeave, leaveOpening, leaveClosing
-        };
+        return Object.assign({}, rp, {
+            days: days, attendance: attendance, counts: counts, dailyRate: dailyRate,
+            absenceDeduction: absenceDeduction, netSalary: netSalary, accrued: accrued,
+            bonusLeave: bonusLeave, leaveOpening: leaveOpening, leaveClosing: leaveClosing
+        });
     });
 }
 
-function getCurrentPeriod() { return periods.find(p => p.id === currentPeriodId) || null; }
+function getCurrentPeriod() { return periods.find(function(p) { return p.id === currentPeriodId; }) || null; }
 
 function renderAll() {
     computeDerived();
@@ -609,19 +626,20 @@ function renderAll() {
     renderPayrollTable();
 }
 
+/* ========== RENDERERS ========== */
 function renderPeriodSelect() {
-    const sel = document.getElementById('periodSelect');
+    var sel = document.getElementById('periodSelect');
     sel.innerHTML = '';
     if (!periods.length) {
-        const opt = document.createElement('option');
+        var opt = document.createElement('option');
         opt.textContent = 'لا توجد فترات';
         sel.appendChild(opt);
         return;
     }
-    periods.forEach(p => {
-        const opt = document.createElement('option');
+    periods.forEach(function(p) {
+        var opt = document.createElement('option');
         opt.value = p.id;
-        opt.textContent = `${p.start} ← ${p.end}`;
+        opt.textContent = escapeHtml(p.start) + ' ← ' + escapeHtml(p.end);
         sel.appendChild(opt);
     });
     sel.value = currentPeriodId;
@@ -634,198 +652,187 @@ function onPeriodSelectChange() {
 }
 
 function renderStats() {
-    const grid = document.getElementById('statsGrid');
+    var grid = document.getElementById('statsGrid');
     if (!periods.length) {
-        grid.innerHTML = `<div class="section-card" style="grid-column:1/-1;"><div class="empty-state"><i class="fa-solid fa-calendar-plus"></i><div>لا توجد فترات مسجلة بعد.</div></div></div>`;
+        grid.innerHTML = '<div class="section-card" style="grid-column:1/-1;"><div class="empty-state"><i class="fa-solid fa-calendar-plus" aria-hidden="true"></i><div>لا توجد فترات مسجلة بعد.</div></div></div>';
         return;
     }
+    var activeTabEl = document.querySelector('.nav-item.active');
+    var activeTab = activeTabEl ? activeTabEl.getAttribute('data-tab') : 'dashboard';
 
-    const activeTab = document.querySelector('.nav-item.active')?.getAttribute('data-tab') || 'dashboard';
-
-    let workDays = 0, leaveDays = 0, officialDays = 0, absentDays = 0, totalDays = 0;
-    let netSalaryVal = 0, dailyRateVal = 0, leaveBalanceVal = 0;
-    let titlePrefix = "";
+    var workDays = 0, leaveDays = 0, officialDays = 0, absentDays = 0, totalDays = 0;
+    var netSalaryVal = 0, dailyRateVal = 0, leaveBalanceVal = 0;
+    var titlePrefix = "";
 
     if (activeTab === 'dashboard') {
         titlePrefix = "إجمالي ";
-        periods.forEach(p => {
-            workDays += p.counts.work;
-            leaveDays += p.counts.leave;
-            officialDays += p.counts.official;
-            absentDays += p.counts.absent;
-            totalDays += p.days;
+        periods.forEach(function(p) {
+            workDays += p.counts.work; leaveDays += p.counts.leave;
+            officialDays += p.counts.official; absentDays += p.counts.absent; totalDays += p.days;
             netSalaryVal += p.netSalary;
         });
-
-        const lastPeriod = periods[periods.length - 1];
+        var lastPeriod = periods[periods.length - 1];
         leaveBalanceVal = lastPeriod ? lastPeriod.leaveClosing : 0;
         dailyRateVal = periods.length ? (netSalaryVal / (totalDays || 1)) : 0;
-
     } else {
-        const p = getCurrentPeriod();
+        var p = getCurrentPeriod();
         if (!p) return;
-        
-        workDays = p.counts.work;
-        leaveDays = p.counts.leave;
-        officialDays = p.counts.official;
-        absentDays = p.counts.absent;
-        totalDays = p.days;
-        netSalaryVal = p.netSalary;
-        dailyRateVal = p.dailyRate;
-        leaveBalanceVal = p.leaveClosing;
+        workDays = p.counts.work; leaveDays = p.counts.leave;
+        officialDays = p.counts.official; absentDays = p.counts.absent; totalDays = p.days;
+        netSalaryVal = p.netSalary; dailyRateVal = p.dailyRate; leaveBalanceVal = p.leaveClosing;
     }
 
-    const attRate = totalDays ? (((totalDays - absentDays) / totalDays) * 100).toFixed(1) + '%' : '0%';
-    const absRate = totalDays ? ((absentDays / totalDays) * 100).toFixed(1) + '%' : '0%';
+    var attRate = totalDays ? (((totalDays - absentDays) / totalDays) * 100).toFixed(1) + '%' : '0%';
+    var absRate = totalDays ? ((absentDays / totalDays) * 100).toFixed(1) + '%' : '0%';
 
-    const cards = [
-        ['fa-briefcase', `${titlePrefix}أيام العمل`, workDays, '#2563eb'],
-        ['fa-umbrella-beach', `${titlePrefix}أيام الإجازة`, leaveDays, '#f59e0b'],
-        ['fa-plane', `${titlePrefix}أيام السفر`, officialDays, '#8b5cf6'],
-        ['fa-user-xmark', `${titlePrefix}أيام الغياب`, absentDays, '#ef4444'],
-        ['fa-percent', `${titlePrefix}نسبة الحضور`, attRate, '#10b981'],
-        ['fa-percent', `${titlePrefix}نسبة الغياب`, absRate, '#ef4444'],
-        ['fa-scale-balanced', 'رصيد الإجازات الحالي', leaveBalanceVal.toFixed(2) + ' يوم', '#10b981'],
+    var cards = [
+        ['fa-briefcase', titlePrefix + 'أيام العمل', workDays, '#2563eb'],
+        ['fa-umbrella-beach', titlePrefix + 'أيام الإجازة', leaveDays, '#f59e0b'],
+        ['fa-plane', titlePrefix + 'أيام السفر', officialDays, '#8b5cf6'],
+        ['fa-user-xmark', titlePrefix + 'أيام الغياب', absentDays, '#ef4444'],
+        ['fa-percent', titlePrefix + 'نسبة الحضور', attRate, '#10b981'],
+        ['fa-percent', titlePrefix + 'نسبة الغياب', absRate, '#ef4444'],
+        ['fa-scale-balanced', 'رصيد الإجازات الحالي', Number(leaveBalanceVal).toFixed(2) + ' يوم', '#10b981'],
         ['fa-money-bill-wave', activeTab === 'dashboard' ? 'إجمالي صافي الرواتب' : 'راتب الفترة', fmtMoney(netSalaryVal), '#0ea5e9'],
         ['fa-coins', activeTab === 'dashboard' ? 'متوسط الأجر اليومي' : 'الأجر اليومي', fmtMoney(dailyRateVal), '#0ea5e9'],
         ['fa-layer-group', 'عدد الفترات', periods.length, 'var(--text-secondary)']
     ];
 
-    grid.innerHTML = cards.map(c => `
-        <div class="stat-card">
-            <h3><i class="fa-solid ${c[0]}" style="color:${c[3]};"></i> ${c[1]}</h3>
-            <div class="value" style="color:${c[3]};">${c[2]}</div>
-        </div>`).join('');
+    grid.innerHTML = cards.map(function(c) {
+        return '<div class="stat-card"><h3><i class="fa-solid ' + c[0] + '" style="color:' + c[3] + ';" aria-hidden="true"></i> ' + escapeHtml(c[1]) + '</h3><div class="value" style="color:' + c[3] + ';">' + escapeHtml(String(c[2])) + '</div></div>';
+    }).join('');
 }
 
 function buildCalendarHTML(p) {
-    if (!p) return `<div class="empty-state"><i class="fa-solid fa-calendar-xmark"></i><div>اختر أو أضف فترة عمل للعرض</div></div>`;
-    const header = WEEKDAYS.map(d => `<div class="calendar-day-header">${d}</div>`).join('');
-    const dates = dateRangeArray(p.start, p.end);
-    const leadOffset = weekdayOf(dates[0]);
-    let cells = '';
-    for (let i = 0; i < leadOffset; i++) cells += `<div class="calendar-day empty"></div>`;
-    const today = todayISO();
-    dates.forEach(d => {
-        const status = p.attendance[d] || 'unset';
-        const meta = STATUS_META[status];
-        const dayNum = Number(d.slice(8, 10));
-        const wd = WEEKDAYS[weekdayOf(d)];
-        const isToday = d === today ? ' today' : '';
-        cells += `
-            <div class="calendar-day${isToday}" title="${d} — ${meta.label}" onclick="openDayModal('${p.id}','${d}')">
-                <div><div class="day-num">${dayNum}</div><div class="day-weekday">${wd}</div></div>
-                <span class="day-status ${meta.cls}">${meta.short}</span>
-            </div>`;
+    if (!p) return '<div class="empty-state"><i class="fa-solid fa-calendar-xmark" aria-hidden="true"></i><div>اختر أو أضف فترة عمل للعرض</div></div>';
+    var header = WEEKDAYS.map(function(d) { return '<div class="calendar-day-header">' + escapeHtml(d) + '</div>'; }).join('');
+    var dates = dateRangeArray(p.start, p.end);
+    var leadOffset = weekdayOf(dates[0]);
+    var cells = '';
+    for (var i = 0; i < leadOffset; i++) cells += '<div class="calendar-day empty"></div>';
+    var today = todayISO();
+    dates.forEach(function(d) {
+        var status = p.attendance[d] || 'unset';
+        var meta = STATUS_META[status];
+        var dayNum = Number(d.slice(8, 10));
+        var wd = WEEKDAYS[weekdayOf(d)];
+        var isToday = d === today ? ' today' : '';
+        cells += '<div class="calendar-day' + isToday + '" title="' + escapeHtml(d) + ' — ' + escapeHtml(meta.label) + '" onclick="openDayModal(&#039;' + escapeHtml(p.id) + '&#039;,&#039;' + escapeHtml(d) + '&#039;)"><div><div class="day-num">' + dayNum + '</div><div class="day-weekday">' + escapeHtml(wd) + '</div></div><span class="day-status ' + meta.cls + '">' + escapeHtml(meta.short) + '</span></div>';
     });
-    const legend = Object.values(STATUS_META).map(m => `<span><i class="${m.cls}"></i>${m.label}</span>`).join('');
-    return `<div class="calendar-grid">${header}</div><div class="calendar-grid">${cells}</div><div class="legend">${legend}</div>`;
+    var legend = Object.values(STATUS_META).map(function(m) { return '<span><i class="' + m.cls + '"></i>' + escapeHtml(m.label) + '</span>'; }).join('');
+    return '<div class="calendar-grid">' + header + '</div><div class="calendar-grid">' + cells + '</div><div class="legend">' + legend + '</div>';
 }
 
 function renderCalendars() {
-    const p = getCurrentPeriod();
-    const html = buildCalendarHTML(p);
+    var p = getCurrentPeriod();
+    var html = buildCalendarHTML(p);
     document.getElementById('dashCalendarBody').innerHTML = html;
     document.getElementById('fullCalendarBody').innerHTML = html;
 }
 
-let statusChartInstance = null;
-let salaryChartInstance = null;
+var statusChartInstance = null;
+var salaryChartInstance = null;
 function renderCharts() {
     if (typeof Chart === 'undefined') return;
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var textColor = isDark ? '#94a3b8' : '#64748b';
 
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const textColor = isDark ? '#94a3b8' : '#64748b';
+    var p = getCurrentPeriod();
+    var ctxStatus = document.getElementById('statusChart');
 
-    const ctxStatus = document.getElementById('statusChart');
-    const p = getCurrentPeriod();
-    if (statusChartInstance) statusChartInstance.destroy();
     if (p && ctxStatus) {
-        statusChartInstance = new Chart(ctxStatus, {
-            type: 'doughnut',
-            data: {
-                labels: ['عمل', 'إجازة', 'سفر', 'غياب', 'غير مسجل'],
-                datasets: [{ data: [p.counts.work, p.counts.leave, p.counts.official, p.counts.absent, p.counts.unset],
-                    backgroundColor: ['#2563eb', '#f59e0b', '#8b5cf6', '#ef4444', '#64748b'] }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: textColor, font: { family: 'Cairo', size: 10 } } }, title: { display: true, text: 'حالات الأيام في الفترة', color: textColor, font: { family: 'Cairo', size: 11 } } } }
-        });
+        var data = [p.counts.work, p.counts.leave, p.counts.official, p.counts.absent, p.counts.unset];
+        var labels = ['عمل', 'إجازة', 'سفر', 'غياب', 'غير مسجل'];
+        var bgColors = ['#2563eb', '#f59e0b', '#8b5cf6', '#ef4444', '#64748b'];
+
+        if (statusChartInstance) {
+            statusChartInstance.data.datasets[0].data = data;
+            statusChartInstance.options.plugins.legend.labels.color = textColor;
+            statusChartInstance.options.plugins.title.color = textColor;
+            statusChartInstance.update();
+        } else {
+            statusChartInstance = new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: { labels: labels, datasets: [{ data: data, backgroundColor: bgColors }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: textColor, font: { family: 'Cairo', size: 10 } } }, title: { display: true, text: 'حالات الأيام في الفترة', color: textColor, font: { family: 'Cairo', size: 11 } } } }
+            });
+        }
+    } else if (statusChartInstance) {
+        statusChartInstance.destroy();
+        statusChartInstance = null;
     }
 
-    const ctxSalary = document.getElementById('salaryChart');
-    if (salaryChartInstance) salaryChartInstance.destroy();
+    var ctxSalary = document.getElementById('salaryChart');
     if (ctxSalary) {
-        salaryChartInstance = new Chart(ctxSalary, {
-            type: 'bar',
-            data: {
-                labels: periods.map(p => p.start),
-                datasets: [{ label: 'الراتب', data: periods.map(p => Number(p.netSalary.toFixed(2))), backgroundColor: '#0ea5e9', borderRadius: 4 }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { color: textColor, font: { size: 9 } } }, y: { ticks: { color: textColor, font: { size: 9 } } } }, plugins: { legend: { display: false }, title: { display: true, text: 'الراتب عبر الفترات', color: textColor, font: { family: 'Cairo', size: 11 } } } }
-        });
+        var labels = periods.map(function(p) { return p.start; });
+        var data = periods.map(function(p) { return Number(p.netSalary.toFixed(2)); });
+
+        if (salaryChartInstance) {
+            salaryChartInstance.data.labels = labels;
+            salaryChartInstance.data.datasets[0].data = data;
+            salaryChartInstance.options.scales.x.ticks.color = textColor;
+            salaryChartInstance.options.scales.y.ticks.color = textColor;
+            salaryChartInstance.options.plugins.title.color = textColor;
+            salaryChartInstance.update();
+        } else {
+            salaryChartInstance = new Chart(ctxSalary, {
+                type: 'bar',
+                data: { labels: labels, datasets: [{ label: 'الراتب', data: data, backgroundColor: '#0ea5e9', borderRadius: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { color: textColor, font: { size: 9 } } }, y: { ticks: { color: textColor, font: { size: 9 } } } }, plugins: { legend: { display: false }, title: { display: true, text: 'الراتب عبر الفترات', color: textColor, font: { family: 'Cairo', size: 11 } } } }
+            });
+        }
     }
 }
 
-/* جدول الفترات الجديد المبسط */
 function renderPayrollTable() {
-    const tbody = document.getElementById('payrollTableBody');
-    if (!periods.length) { tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--text-muted);">لا توجد بيانات متاحة</td></tr>`; return; }
-    tbody.innerHTML = periods.map((p, idx) => `
-        <tr class="clickable-row" onclick="openPeriodDetailsModal('${p.id}')">
-            <td><b>${idx + 1}</b></td>
-            <td><i class="fa-regular fa-calendar-days" style="margin-left:8px; color:var(--accent);"></i><b>${p.start}</b> ← <b>${p.end}</b></td>
-            <td style="text-align: center;">
-                <button class="btn-ghost btn-sm" onclick="event.stopPropagation(); openPeriodDetailsModal('${p.id}')"><i class="fa-solid fa-eye"></i> التفاصيل</button>
-            </td>
-        </tr>`).join('');
+    var tbody = document.getElementById('payrollTableBody');
+    if (!periods.length) { 
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:var(--text-muted);">لا توجد بيانات متاحة</td></tr>'; 
+        return; 
+    }
+    tbody.innerHTML = periods.map(function(p, idx) {
+        return '<tr class="clickable-row" onclick="openPeriodDetailsModal(&#039;' + escapeHtml(p.id) + '&#039;)"><td><b>' + (idx + 1) + '</b></td><td><i class="fa-regular fa-calendar-days" style="margin-left:8px; color:var(--accent);" aria-hidden="true"></i><b>' + escapeHtml(p.start) + '</b> ← <b>' + escapeHtml(p.end) + '</b></td><td style="text-align: center;"><button class="btn-ghost btn-sm" onclick="event.stopPropagation(); openPeriodDetailsModal(&#039;' + escapeHtml(p.id) + '&#039;)" aria-label="عرض تفاصيل الفترة ' + escapeHtml(p.start) + '"><i class="fa-solid fa-eye" aria-hidden="true"></i> التفاصيل</button></td></tr>';
+    }).join('');
 }
 
-/* نافذة منبثقة لتفاصيل الفترة والخيارات */
 function openPeriodDetailsModal(id) {
-    const p = periods.find(x => x.id === id);
+    var p = periods.find(function(x) { return x.id === id; });
     if (!p) return;
+    var body = document.getElementById('periodDetailsBody');
+    var actions = document.getElementById('periodDetailsActions');
 
-    const body = document.getElementById('periodDetailsBody');
-    const actions = document.getElementById('periodDetailsActions');
+    body.innerHTML = 
+        '<div style="text-align:center; margin-bottom:14px; font-weight:700; font-size:1rem; color:var(--accent);">' + escapeHtml(p.start) + ' ← ' + escapeHtml(p.end) + '</div>' +
+        '<div class="details-grid">' +
+        '<div class="details-item"><span class="lbl">إجمالي الأيام</span><span class="val">' + p.days + ' يوم</span></div>' +
+        '<div class="details-item"><span class="lbl">الراتب الأساسي</span><span class="val">' + fmtMoney(p.salary) + '</span></div>' +
+        '<div class="details-item"><span class="lbl">الأجر اليومي</span><span class="val">' + fmtMoney(p.dailyRate) + '</span></div>' +
+        '<div class="details-item"><span class="lbl">صافي الراتب</span><span class="val" style="color:var(--success);">' + fmtMoney(p.netSalary) + '</span></div>' +
+        '</div>' +
+        '<div class="details-grid">' +
+        '<div class="details-item"><span class="lbl">أيام العمل</span><span class="val">' + p.counts.work + '</span></div>' +
+        '<div class="details-item"><span class="lbl">أيام الإجازة</span><span class="val">' + p.counts.leave + '</span></div>' +
+        '<div class="details-item"><span class="lbl">أيام السفر</span><span class="val">' + p.counts.official + '</span></div>' +
+        '<div class="details-item"><span class="lbl">أيام الغياب</span><span class="val" style="color:var(--danger);">' + p.counts.absent + '</span></div>' +
+        '</div>' +
+        '<div class="details-grid" style="grid-template-columns: 1fr;">' +
+        '<div class="details-item"><span class="lbl">رصيد الإجازات</span><span class="val">' + p.leaveOpening.toFixed(2) + ' + (' + p.accrued + ' + ' + p.bonusLeave + ') ← <b style="color:var(--accent);">' + p.leaveClosing.toFixed(2) + ' يوم</b></span></div>' +
+        '</div>';
 
-    body.innerHTML = `
-        <div style="text-align:center; margin-bottom:14px; font-weight:700; font-size:1rem; color:var(--accent);">
-            ${p.start} ← ${p.end}
-        </div>
-        <div class="details-grid">
-            <div class="details-item"><span class="lbl">إجمالي الأيام</span><span class="val">${p.days} يوم</span></div>
-            <div class="details-item"><span class="lbl">الراتب الأساسي</span><span class="val">${fmtMoney(p.salary)}</span></div>
-            <div class="details-item"><span class="lbl">الأجر اليومي</span><span class="val">${fmtMoney(p.dailyRate)}</span></div>
-            <div class="details-item"><span class="lbl">صافي الراتب</span><span class="val" style="color:var(--success);">${fmtMoney(p.netSalary)}</span></div>
-        </div>
-        <div class="details-grid">
-            <div class="details-item"><span class="lbl">أيام العمل</span><span class="val">${p.counts.work}</span></div>
-            <div class="details-item"><span class="lbl">أيام الإجازة</span><span class="val">${p.counts.leave}</span></div>
-            <div class="details-item"><span class="lbl">أيام السفر</span><span class="val">${p.counts.official}</span></div>
-            <div class="details-item"><span class="lbl">أيام الغياب</span><span class="val" style="color:var(--danger);">${p.counts.absent}</span></div>
-        </div>
-        <div class="details-grid" style="grid-template-columns: 1fr;">
-            <div class="details-item">
-                <span class="lbl">رصيد الإجازات</span>
-                <span class="val">${p.leaveOpening.toFixed(2)} + (${p.accrued} + ${p.bonusLeave}) ← <b style="color:var(--accent);">${p.leaveClosing.toFixed(2)} يوم</b></span>
-            </div>
-        </div>
-    `;
-
-    actions.innerHTML = `
-        <button class="btn-secondary" onclick="closeModal('periodDetailsModal')">إغلاق</button>
-        <button class="btn-ghost" onclick="closeModal('periodDetailsModal'); openPeriodModal('${p.id}')"><i class="fa-solid fa-pen"></i> تعديل</button>
-        <button class="btn-danger" onclick="closeModal('periodDetailsModal'); confirmDeletePeriod('${p.id}')"><i class="fa-solid fa-trash"></i> حذف</button>
-    `;
+    actions.innerHTML = 
+        '<button class="btn-secondary" onclick="closeModal(&#039;periodDetailsModal&#039;)">إغلاق</button>' +
+        '<button class="btn-ghost" onclick="closeModal(&#039;periodDetailsModal&#039;); openPeriodModal(&#039;' + escapeHtml(p.id) + '&#039;)"><i class="fa-solid fa-pen" aria-hidden="true"></i> تعديل</button>' +
+        '<button class="btn-danger" onclick="closeModal(&#039;periodDetailsModal&#039;); confirmDeletePeriod(&#039;' + escapeHtml(p.id) + '&#039;)"><i class="fa-solid fa-trash" aria-hidden="true"></i> حذف</button>';
 
     openModal('periodDetailsModal');
 }
 
-function openPeriodModal(id = null) {
+function openPeriodModal(id) {
+    id = id || null;
     editingPeriodId = id;
-    const title = document.getElementById('periodModalTitle');
+    var title = document.getElementById('periodModalTitle');
     if (id) {
-        const p = periods.find(x => x.id === id);
+        var p = periods.find(function(x) { return x.id === id; });
         title.textContent = 'تعديل الفترة';
         document.getElementById('pStart').value = p.start;
         document.getElementById('pEnd').value = p.end;
@@ -844,58 +851,60 @@ function openPeriodModal(id = null) {
 }
 
 function savePeriodForm() {
-    const start = document.getElementById('pStart').value;
-    const end = document.getElementById('pEnd').value;
-    const salary = parseFloat(document.getElementById('pSalary').value) || 0;
-    const accrued = parseFloat(document.getElementById('pAccrued').value) || 0;
-    const bonusLeave = parseFloat(document.getElementById('pBonusLeave').value) || 0;
+    var start = document.getElementById('pStart').value;
+    var end = document.getElementById('pEnd').value;
+    var salary = parseFloat(document.getElementById('pSalary').value) || 0;
+    var accrued = parseFloat(document.getElementById('pAccrued').value) || 0;
+    var bonusLeave = parseFloat(document.getElementById('pBonusLeave').value) || 0;
 
     if (!start || !end) { showToast('حدد تاريخ البداية والنهاية', 'error'); return; }
     if (end < start) { showToast('تاريخ النهاية يجب أن يكون بعد البداية', 'error'); return; }
+    if (salary < 0) { showToast('الراتب لا يمكن أن يكون سالباً', 'error'); return; }
 
-    const overlap = rawPeriods.find(p => p.id !== editingPeriodId && periodsOverlap(start, end, p.start, p.end));
-    if (overlap) { showToast(`متداخلة مع فترة أخرى (${overlap.start} ← ${overlap.end})`, 'error'); return; }
+    var overlap = rawPeriods.find(function(p) { return p.id !== editingPeriodId && periodsOverlap(start, end, p.start, p.end); });
+    if (overlap) { showToast('متداخلة مع فترة أخرى (' + overlap.start + ' ← ' + overlap.end + ')', 'error'); return; }
 
     if (editingPeriodId) {
-        const existing = rawPeriods.find(p => p.id === editingPeriodId);
-        const validDates = new Set(dateRangeArray(start, end));
-        const trimmedAttendance = {};
-        Object.entries(existing.attendance || {}).forEach(([d, st]) => { if (validDates.has(d)) trimmedAttendance[d] = st; });
-        periodsRef.child(editingPeriodId).update({ start, end, salary, accrued, bonusLeave, attendance: trimmedAttendance })
-            .then(() => showToast('تم التعديل بنجاح', 'success'))
-            .catch(e => showToast('خطأ: ' + e.message, 'error'));
+        var existing = rawPeriods.find(function(p) { return p.id === editingPeriodId; });
+        var validDates = new Set(dateRangeArray(start, end));
+        var trimmedAttendance = {};
+        Object.keys(existing.attendance || {}).forEach(function(d) { if (validDates.has(d)) trimmedAttendance[d] = existing.attendance[d]; });
+        periodsRef.child(editingPeriodId).update({ start: start, end: end, salary: salary, accrued: accrued, bonusLeave: bonusLeave, attendance: trimmedAttendance })
+            .then(function() { showToast('تم التعديل بنجاح', 'success'); })
+            .catch(function(e) { showToast('خطأ: ' + e.message, 'error'); });
     } else {
-        const newId = String(Date.now());
-        periodsRef.child(newId).set({ start, end, salary, accrued, bonusLeave, attendance: {} })
-            .then(() => showToast('تمت إضافة الفترة', 'success'))
-            .catch(e => showToast('خطأ: ' + e.message, 'error'));
+        var newId = String(Date.now());
+        periodsRef.child(newId).set({ start: start, end: end, salary: salary, accrued: accrued, bonusLeave: bonusLeave, attendance: {} })
+            .then(function() { showToast('تمت إضافة الفترة', 'success'); })
+            .catch(function(e) { showToast('خطأ: ' + e.message, 'error'); });
     }
     closeModal('periodModal');
 }
 
 function confirmDeletePeriod(id) {
-    const p = periods.find(x => x.id === id);
-    showConfirm('حذف الفترة', `هل أنت متأكد من حذف فترة (${p.start} ← ${p.end})؟`, () => {
-        periodsRef.child(id).remove().then(() => showToast('تم حذف الفترة', 'success'));
+    var p = periods.find(function(x) { return x.id === id; });
+    showConfirm('حذف الفترة', 'هل أنت متأكد من حذف فترة (' + p.start + ' ← ' + p.end + ')؟', function() {
+        periodsRef.child(id).remove().then(function() { showToast('تم حذف الفترة', 'success'); });
     });
 }
 
 function openDayModal(periodId, dateStr) {
     currentPeriodId = periodId;
     selectedDayDate = dateStr;
-    const p = periods.find(x => x.id === periodId);
-    const current = p.attendance[dateStr] || 'unset';
-    document.getElementById('modalTitle').textContent = `تحديث يوم ${dateStr}`;
-    const grid = document.getElementById('statusChoiceGrid');
-    grid.innerHTML = Object.entries(STATUS_META).map(([key, meta]) => `
-        <button class="status-choice ${meta.cls} ${key === current ? 'selected' : ''}" onclick="setDayStatus('${key}')">${meta.label}</button>
-    `).join('');
+    var p = periods.find(function(x) { return x.id === periodId; });
+    var current = p.attendance[dateStr] || 'unset';
+    document.getElementById('modalTitle').textContent = 'تحديث يوم ' + dateStr;
+    var grid = document.getElementById('statusChoiceGrid');
+    grid.innerHTML = Object.keys(STATUS_META).map(function(key) {
+        var meta = STATUS_META[key];
+        return '<button class="status-choice ' + meta.cls + (key === current ? ' selected' : '') + '" onclick="setDayStatus(&#039;' + key + '&#039;)">' + meta.label + '</button>';
+    }).join('');
     openModal('statusModal');
 }
 function setDayStatus(status) {
     if (!currentPeriodId || !selectedDayDate) return;
-    periodsRef.child(`${currentPeriodId}/attendance/${selectedDayDate}`).set(status)
-        .then(() => showToast('تم التحديث', 'success'));
+    periodsRef.child(currentPeriodId + '/attendance/' + selectedDayDate).set(status)
+        .then(function() { showToast('تم التحديث', 'success'); });
     closeModal('statusModal');
 }
 
@@ -909,7 +918,7 @@ function renderSettingsForm() {
     document.getElementById('setOfficialWorkDays').value = settings.officialWorkDays;
 }
 function saveSettings() {
-    const updated = {
+    var updated = {
         employeeName: document.getElementById('setEmployeeName').value.trim(),
         companyName: document.getElementById('setCompanyName').value.trim(),
         currency: document.getElementById('setCurrency').value.trim() || 'ج.م',
@@ -918,74 +927,91 @@ function saveSettings() {
         dailyRateMethod: document.getElementById('setDailyRateMethod').value,
         officialWorkDays: parseInt(document.getElementById('setOfficialWorkDays').value) || 0
     };
-    settingsRef.update(updated).then(() => showToast('تم حفظ الإعدادات', 'success'));
+    settingsRef.update(updated).then(function() { showToast('تم حفظ الإعدادات', 'success'); });
 }
 
 function exportExcelMultiSheet() {
     if (!periods.length) { showToast('لا توجد بيانات تصدير', 'error'); return; }
-    const wb = XLSX.utils.book_new();
-
-    const attendanceRows = [];
-    periods.forEach(p => dateRangeArray(p.start, p.end).forEach(d => {
-        attendanceRows.push({ 'الفترة': `${p.start} ← ${p.end}`, 'التاريخ': d, 'اليوم': WEEKDAYS[weekdayOf(d)], 'الحالة': STATUS_META[p.attendance[d] || 'unset'].label });
-    }));
+    var wb = XLSX.utils.book_new();
+    var attendanceRows = [];
+    periods.forEach(function(p) {
+        dateRangeArray(p.start, p.end).forEach(function(d) {
+            attendanceRows.push({ 'الفترة': p.start + ' ← ' + p.end, 'التاريخ': d, 'اليوم': WEEKDAYS[weekdayOf(d)], 'الحالة': STATUS_META[p.attendance[d] || 'unset'].label });
+        });
+    });
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(attendanceRows), 'الحضور');
-
-    const payrollRows = periods.map(p => ({ 'الفترة': `${p.start} ← ${p.end}`, 'الأيام': p.days, 'الراتب': p.salary, 'أجر اليوم': p.dailyRate.toFixed(2), 'عمل': p.counts.work, 'غياب': p.counts.absent, 'إجازة': p.counts.leave, 'سفر': p.counts.official }));
+    var payrollRows = periods.map(function(p) {
+        return { 'الفترة': p.start + ' ← ' + p.end, 'الأيام': p.days, 'الراتب': p.salary, 'أجر اليوم': p.dailyRate.toFixed(2), 'عمل': p.counts.work, 'غياب': p.counts.absent, 'إجازة': p.counts.leave, 'سفر': p.counts.official };
+    });
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(payrollRows), 'الفترات');
-
-    XLSX.writeFile(wb, `سجل_الحضور_${todayISO()}.xlsx`);
+    XLSX.writeFile(wb, 'سجل_الحضور_' + todayISO() + '.xlsx');
     showToast('تم التصدير لـ Excel', 'success');
 }
 
 function exportJSON() {
-    const backup = { settings, periods: rawPeriods, exportedAt: new Date().toISOString() };
-    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
+    var backup = { settings: settings, periods: rawPeriods, exportedAt: new Date().toISOString() };
+    var blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `نسخة_احتياطية_${todayISO()}.json`;
+    a.download = 'نسخة_احتياطية_' + todayISO() + '.json';
     a.click();
     showToast('تم تصدير JSON', 'success');
 }
 
+function validateImportSchema(data) {
+    if (!data || typeof data !== 'object') return false;
+    if (!Array.isArray(data.periods)) return false;
+    for (var i = 0; i < data.periods.length; i++) {
+        var p = data.periods[i];
+        if (!p.id || typeof p.id !== 'string') return false;
+        if (!p.start || typeof p.start !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(p.start)) return false;
+        if (!p.end || typeof p.end !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(p.end)) return false;
+        if (typeof p.salary !== 'number' || p.salary < 0) return false;
+        if (p.attendance && typeof p.attendance !== 'object') return false;
+        if (p.accrued !== undefined && typeof p.accrued !== 'number') return false;
+        if (p.bonusLeave !== undefined && typeof p.bonusLeave !== 'number') return false;
+    }
+    if (data.settings && typeof data.settings !== 'object') return false;
+    return true;
+}
+
 function importJSON(event) {
-    const file = event.target.files[0];
+    var file = event.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
+    var reader = new FileReader();
+    reader.onload = function(e) {
         try {
-            const data = JSON.parse(e.target.result);
-            if (!data.periods) throw new Error('الملف غير صالح');
-            showConfirm('استيراد البيانات', 'سيتم استبدال البيانات الحالية بالكامل. هل تريد المتابعة؟', () => {
-                const updates = {};
+            var data = JSON.parse(e.target.result);
+            if (!validateImportSchema(data)) throw new Error('الملف غير صالح أو البيانات غير مكتملة');
+            showConfirm('استيراد البيانات', 'سيتم استبدال البيانات الحالية بالكامل. هل تريد المتابعة؟', function() {
+                var updates = {};
                 updates['lkh_system/periods'] = {};
-                data.periods.forEach(p => {
-                    const id = p.id || String(Date.now() + Math.floor(Math.random() * 1000));
-                    updates[`lkh_system/periods/${id}`] = p;
+                data.periods.forEach(function(p) {
+                    var id = p.id || String(Date.now() + Math.floor(Math.random() * 1000));
+                    updates['lkh_system/periods/' + id] = p;
                 });
-                if (data.settings) updates['lkh_system/settings'] = { ...DEFAULT_SETTINGS, ...data.settings };
-                db.ref().update(updates).then(() => showToast('تمت استعادة البيانات', 'success'));
+                if (data.settings) updates['lkh_system/settings'] = Object.assign({}, DEFAULT_SETTINGS, data.settings);
+                db.ref().update(updates).then(function() { showToast('تمت استعادة البيانات', 'success'); });
             });
-        } catch (err) { showToast('تعذر قراءة الملف', 'error'); }
+        } catch (err) { showToast('تعذر قراءة الملف: ' + err.message, 'error'); }
         event.target.value = '';
     };
     reader.readAsText(file);
 }
 
 function confirmClearAll() {
-    showConfirm('تأكيد الحذف النهائي', 'سيتم حذف كل البيانات والتواريخ من قاعدة البيانات نهائياً.', () => {
-        periodsRef.remove().then(() => showToast('تم مسح البيانات', 'success'));
+    showConfirm('تأكيد الحذف النهائي', 'سيتم حذف كل البيانات والتواريخ من قاعدة البيانات نهائياً.', function() {
+        periodsRef.remove().then(function() { showToast('تم مسح البيانات', 'success'); });
     });
 }
 
 function switchTab(tabId, elem) {
-    document.querySelectorAll('.section-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    document.querySelectorAll('.section-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.nav-item').forEach(function(i) { i.classList.remove('active'); i.setAttribute('aria-selected', 'false'); });
     document.getElementById('tab-' + tabId).classList.add('active');
     elem.classList.add('active');
-
+    elem.setAttribute('aria-selected', 'true');
     renderStats();
-
     if (tabId === 'dashboard') renderCharts();
 }
 
