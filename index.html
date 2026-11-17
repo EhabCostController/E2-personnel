@@ -17,10 +17,10 @@
     --text-primary: #f8fafc; --text-secondary: #94a3b8; --text-muted: #64748b;
     --accent: #3b82f6; --accent-hover: #60a5fa;
     --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --info: #0ea5e9; --purple: #8b5cf6;
-    --status-work-bg: rgba(37,99,235,0.2); --status-work-txt: #60a5fa; --status-work-border: rgba(37,99,235,0.4);
-    --status-leave-bg: rgba(245,158,11,0.2); --status-leave-txt: #fbbf24; --status-leave-border: rgba(245,158,11,0.4);
-    --status-off-bg: rgba(139,92,246,0.2); --status-off-txt: #c084fc; --status-off-border: rgba(139,92,246,0.4);
-    --status-abs-bg: rgba(239,68,68,0.2); --status-abs-txt: #f87171; --status-abs-border: rgba(239,68,68,0.4);
+    --status-work-bg: rgba(37,99,235,0.25); --status-work-txt: #60a5fa; --status-work-border: rgba(37,99,235,0.4);
+    --status-leave-bg: rgba(245,158,11,0.25); --status-leave-txt: #fbbf24; --status-leave-border: rgba(245,158,11,0.4);
+    --status-off-bg: rgba(139,92,246,0.25); --status-off-txt: #c084fc; --status-off-border: rgba(139,92,246,0.4);
+    --status-abs-bg: rgba(239,68,68,0.25); --status-abs-txt: #f87171; --status-abs-border: rgba(239,68,68,0.4);
     --status-unset-bg: rgba(30,41,59,0.3); --status-unset-txt: #64748b; --status-unset-border: rgba(51,65,85,0.4);
     --radius-sm: 4px; --radius-md: 8px;
 }
@@ -54,9 +54,11 @@ button.btn-sm { padding: 2px 5px; font-size: 0.62rem; }
 .conn-badge.online { border-color: rgba(16,185,129,0.3); color: var(--success); }
 .conn-badge.online .conn-dot { background: var(--success); }
 
-/* شبكة البطاقات الإحصائية */
+/* شبكة الإحصائيات القابلة للضغط */
 .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px; }
-.stat-card { background: var(--bg-card); padding: 8px 10px; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; min-height: 60px; }
+.stat-card { background: var(--bg-card); padding: 8px 10px; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; min-height: 60px; text-align: right; width: 100%; transition: 0.15s; cursor: default; }
+.stat-card.clickable { cursor: pointer; }
+.stat-card.clickable:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59,130,246,0.15); }
 .stat-card h3 { font-size: 0.62rem; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; font-weight: 600; }
 .stat-card .value { font-size: 0.95rem; font-weight: 800; margin-top: 2px; }
 
@@ -73,14 +75,15 @@ button.btn-sm { padding: 2px 5px; font-size: 0.62rem; }
 .calendar-legend span { display: flex; align-items: center; gap: 3px; }
 .calendar-legend i { display: inline-block; width: 6px; height: 6px; border-radius: 2px; }
 
-/* التقويم السنوي مصغر ومضغوط تماماً ويبدأ من اليمين (يناير) */
+/* التقويم السنوي فائق الصغر والمضغوط جداً (من اليمين لليسار RTL) */
 .year-compact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 4px; direction: rtl; }
 .month-mini-box { background: rgba(0,0,0,0.15); border: 1px solid var(--border-color); border-radius: 3px; padding: 2px 4px; direction: rtl; }
 .month-mini-title { text-align: center; font-weight: 700; color: var(--accent); font-size: 0.58rem; margin-bottom: 1px; padding-bottom: 1px; border-bottom: 1px solid var(--border-color); }
 .days-mini-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; text-align: center; }
 .day-header-mini { font-size: 0.44rem; font-weight: 700; color: var(--text-muted); padding: 0; }
-.day-num-btn { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 0.48rem; font-weight: 600; border-radius: 1px; cursor: pointer; border: 1px solid transparent; width: 100%; min-width: 10px; min-height: 10px; transition: 0.1s; padding: 0; }
-.day-num-btn:hover { transform: scale(1.3); z-index: 2; box-shadow: 0 0 3px rgba(0,0,0,0.8); }
+
+.day-num-btn { height: 15px; width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.48rem; font-weight: 600; border-radius: 1px; cursor: pointer; border: 1px solid transparent; transition: 0.1s; padding: 0; }
+.day-num-btn:hover { transform: scale(1.2); z-index: 2; box-shadow: 0 0 3px rgba(0,0,0,0.8); }
 .day-num-btn.empty { background: transparent !important; border: none !important; cursor: default; }
 .day-num-btn.today { outline: 1px solid #fff; font-weight: 800; }
 
@@ -107,8 +110,10 @@ th { background-color: rgba(0,0,0,0.3); color: var(--text-secondary); font-weigh
 
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); display: none; justify-content: center; align-items: center; z-index: 200; padding: 8px; }
 .modal-overlay.open { display: flex; }
-.modal { background: var(--bg-card); border: 1px solid var(--border-color); padding: 10px; border-radius: var(--radius-md); width: 260px; max-width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-.modal h3 { margin-bottom: 6px; font-size: 0.75rem; font-weight: 700; }
+.modal { background: var(--bg-card); border: 1px solid var(--border-color); padding: 12px; border-radius: var(--radius-md); width: 320px; max-width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.5); max-height: 85vh; display: flex; flex-direction: column; }
+.modal h3 { margin-bottom: 8px; font-size: 0.8rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+.modal-body { overflow-y: auto; max-height: 60vh; margin-bottom: 8px; }
+
 .form-group { margin-bottom: 5px; }
 .form-group label { display: block; font-size: 0.58rem; font-weight: 600; margin-bottom: 2px; color: var(--text-secondary); }
 .form-group input, .form-group select { width: 100%; padding: 2px 4px; }
@@ -141,11 +146,11 @@ th { background-color: rgba(0,0,0,0.3); color: var(--text-secondary); font-weigh
     .nav-item span { display: none; }
     .main-content { padding: 5px; }
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .year-compact-grid { grid-template-columns: repeat(2, 1fr); }
+    .year-compact-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 480px) {
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .year-compact-grid { grid-template-columns: 1fr; }
+    .year-compact-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -178,7 +183,7 @@ th { background-color: rgba(0,0,0,0.3); color: var(--text-secondary); font-weigh
         </div>
     </div>
 
-    <!-- شبكة الإحصائيات المنظمة 5x2 -->
+    <!-- شبكة الإحصائيات التفاعلية -->
     <div class="stats-grid" id="statsGrid"></div>
 
     <!-- التبويب 1: التقويم السنوي الكامل 12 شهراً + التحليلات -->
@@ -192,7 +197,7 @@ th { background-color: rgba(0,0,0,0.3); color: var(--text-secondary); font-weigh
                     <button class="btn-ghost btn-sm" onclick="changeYear(1)"><i class="fa-solid fa-chevron-left"></i></button>
                 </div>
             </div>
-            <p class="section-desc">اضغط على اليوم لتغيير حالته فوراً.</p>
+            <p class="section-desc">اضغط على البطاقات بالأعلى لاستعراض تفاصيل وحالات كل نوع فوراً.</p>
             
             <div id="yearCalendarContainer" class="year-compact-grid"></div>
 
@@ -280,9 +285,9 @@ th { background-color: rgba(0,0,0,0.3); color: var(--text-secondary); font-weigh
     </div>
 </div>
 
-<!-- Modal الحالة -->
+<!-- Modal تحديث الحالة الفردية -->
 <div class="modal-overlay" id="statusModal">
-    <div class="modal">
+    <div class="modal" style="width: 260px;">
         <h3 id="modalTitle">تحديث الحالة</h3>
         <div class="status-choice-grid" id="statusChoiceGrid"></div>
         <div class="modal-actions">
@@ -291,9 +296,33 @@ th { background-color: rgba(0,0,0,0.3); color: var(--text-secondary); font-weigh
     </div>
 </div>
 
+<!-- Modal تقرير الحالة المخصص -->
+<div class="modal-overlay" id="reportModal">
+    <div class="modal">
+        <h3 id="reportModalTitle">تقرير الحالة <button class="btn-ghost btn-sm" onclick="closeModal('reportModal')"><i class="fa-solid fa-xmark"></i></button></h3>
+        <div class="modal-body">
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>التاريخ</th>
+                            <th>الحالة</th>
+                            <th style="text-align: center;">إجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn-secondary btn-sm" onclick="closeModal('reportModal')">إغلاق</button>
+        </div>
+    </div>
+</div>
+
 <!-- Modal الفترة -->
 <div class="modal-overlay" id="periodModal">
-    <div class="modal">
+    <div class="modal" style="width: 280px;">
         <h3 id="periodModalTitle">فترة جديدة</h3>
         <div class="form-row">
             <div class="form-group"><label for="pStart">البداية</label><input type="date" id="pStart"></div>
@@ -346,7 +375,7 @@ var SHORT_WEEKDAYS = ["ح", "ن", "ث", "ر", "خ", "ج", "س"];
 var settings = Object.assign({}, DEFAULT_SETTINGS);
 var rawPeriods = [], periods = [], globalAttendance = {};
 var currentPeriodId = null, selectedDayDate = null, editingPeriodId = null;
-var selectedYear = new Date().getFullYear();
+var selectedYear = 2026;
 var firstLoadDone = { settings: false, periods: false, globalAtt: false };
 
 function dateRangeArray(start, end) {
@@ -406,6 +435,9 @@ function getDayStatusFromAnywhere(dateStr) {
         if (dateStr >= p.start && dateStr <= p.end && p.attendance && p.attendance[dateStr]) {
             return p.attendance[dateStr];
         }
+    }
+    if (dateStr < todayISO()) {
+        return 'absent';
     }
     return 'unset';
 }
@@ -545,11 +577,41 @@ function setDayStatus(status) {
         globalAttendanceRef.child(selectedDayDate).set(status);
     }
     closeModal('statusModal');
+    closeModal('reportModal');
     showToast('تم التحديث بنجاح', 'success');
 }
 
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+/* فتح تقرير حالة معينة عند الضغط على البططة الإحصائية */
+function openReportModal(statusKey, titleName) {
+    var tbody = document.getElementById('reportTableBody');
+    document.getElementById('reportModalTitle').innerHTML = 'تقرير ' + titleName + ' (' + selectedYear + ') <button class="btn-ghost btn-sm" onclick="closeModal(\'reportModal\')"><i class="fa-solid fa-xmark"></i></button>';
+    
+    var matchedDays = [];
+    for (var m = 0; m < 12; m++) {
+        var daysInMonth = new Date(selectedYear, m + 1, 0).getDate();
+        for (var d = 1; d <= daysInMonth; d++) {
+            var dFormatted = String(d).padStart(2, '0');
+            var mFormatted = String(m + 1).padStart(2, '0');
+            var dateKey = selectedYear + '-' + mFormatted + '-' + dFormatted;
+            var st = getDayStatusFromAnywhere(dateKey);
+            if (st === statusKey) {
+                matchedDays.push(dateKey);
+            }
+        }
+    }
+
+    if (!matchedDays.length) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:10px;">لا توجد تواريخ مسجلة لهذه الحالة</td></tr>';
+    } else {
+        tbody.innerHTML = matchedDays.map(function(d) {
+            return '<tr><td><b>' + d + '</b></td><td><span style="color:var(--accent);">' + STATUS_META[statusKey].label + '</span></td><td style="text-align:center;"><button class="btn-ghost btn-sm" onclick="openStatusModal(\'' + d + '\')"><i class="fa-solid fa-pen"></i> تعديل</button></td></tr>';
+        }).join('');
+    }
+    openModal('reportModal');
+}
 
 function openPeriodModal(id) {
     editingPeriodId = id || null;
@@ -643,20 +705,22 @@ function renderStats() {
     var absRate = totalDays ? ((absentDays / totalDays) * 100).toFixed(1) + '%' : '0.0%';
 
     var cards = [
-        ['fa-briefcase', 'إجمالي أيام العمل', workDays, 'var(--accent)'],
-        ['fa-umbrella-beach', 'إجمالي أيام الإجازة', leaveDays, 'var(--warning)'],
-        ['fa-plane', 'إجمالي أيام السفر', officialDays, 'var(--purple)'],
-        ['fa-user-xmark', 'إجمالي أيام الغياب', absentDays, 'var(--danger)'],
-        ['fa-percent', 'إجمالي نسبة الحضور', attRate, 'var(--success)'],
-        ['fa-percent', 'إجمالي نسبة الغياب', absRate, 'var(--danger)'],
-        ['fa-scale-balanced', 'رصيد الإجازات الحالي', Number(leaveBalanceVal).toFixed(2) + ' يوم', 'var(--success)'],
-        ['fa-money-bill-wave', 'إجمالي صافي الرواتب', fmtMoney(netSalaryVal), 'var(--info)'],
-        ['fa-coins', 'متوسط الأجر اليومي', fmtMoney(dailyRateVal), 'var(--info)'],
-        ['fa-layer-group', 'عدد الفترات', periods.length, 'var(--text-secondary)']
+        { icon: 'fa-briefcase', title: 'إجمالي أيام العمل', val: workDays, color: 'var(--accent)', clickable: true, action: "openReportModal('work', 'أيام العمل')" },
+        { icon: 'fa-umbrella-beach', title: 'إجمالي أيام الإجازة', val: leaveDays, color: 'var(--warning)', clickable: true, action: "openReportModal('leave', 'أيام الإجازة')" },
+        { icon: 'fa-plane', title: 'إجمالي أيام السفر', val: officialDays, color: 'var(--purple)', clickable: true, action: "openReportModal('official', 'أيام السفر')" },
+        { icon: 'fa-user-xmark', title: 'إجمالي أيام الغياب', val: absentDays, color: 'var(--danger)', clickable: true, action: "openReportModal('absent', 'أيام الغياب')" },
+        { icon: 'fa-percent', title: 'إجمالي نسبة الحضور', val: attRate, color: 'var(--success)', clickable: false },
+        { icon: 'fa-percent', title: 'إجمالي نسبة الغياب', val: absRate, color: 'var(--danger)', clickable: false },
+        { icon: 'fa-scale-balanced', title: 'رصيد الإجازات الحالي', val: Number(leaveBalanceVal).toFixed(2) + ' يوم', color: 'var(--success)', clickable: false },
+        { icon: 'fa-money-bill-wave', title: 'إجمالي صافي الرواتب', val: fmtMoney(netSalaryVal), color: 'var(--info)', clickable: false },
+        { icon: 'fa-coins', title: 'متوسط الأجر اليومي', val: fmtMoney(dailyRateVal), color: 'var(--info)', clickable: false },
+        { icon: 'fa-layer-group', title: 'عدد الفترات', val: periods.length, color: 'var(--text-secondary)', clickable: false }
     ];
 
     grid.innerHTML = cards.map(function(c) {
-        return '<div class="stat-card"><h3><i class="fa-solid ' + c[0] + '" style="color:' + c[3] + ';"></i> ' + c[1] + '</h3><div class="value" style="color:' + c[3] + ';">' + c[2] + '</div></div>';
+        var cls = c.clickable ? 'stat-card clickable' : 'stat-card';
+        var attr = c.clickable ? ' onclick="' + c.action + '" title="اضغط لعرض التفاصيل"' : '';
+        return '<div class="' + cls + '"' + attr + '><h3><i class="fa-solid ' + c.icon + '" style="color:' + c.color + ';"></i> ' + c.title + '</h3><div class="value" style="color:' + c.color + ';">' + c.val + '</div></div>';
     }).join('');
 }
 
